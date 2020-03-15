@@ -1,0 +1,38 @@
+﻿@page "/plan"
+@using Elsa.Activities.Workflows.Extensions
+@using Elsa.Models
+@inject IWorkflowInvoker WorkflowInvoker
+
+<div class="form-signup">
+    <EditForm Model="@PlanModel" OnValidSubmit="@HandleFormSubmission" hidden="@ShowConfirmation">
+
+        <h1 class="h3 mb-3 font-weight-normal">Please register</h1>
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <InputText type="text" id="prefix" @bind-Value="@PlanModel.Prefix" placeholder="Prefix" class="form-control" /> 
+
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>
+    </EditForm>
+
+    <div hidden="@(!ShowConfirmation)">
+        Thanks for signing up! Please check your email.
+    </div>
+</div>
+
+@code {
+    
+    private PlanModel PlanModel { get; set; } = new PlanModel();
+    private bool ShowConfirmation { get; set; } = false;
+
+    private async Task HandleFormSubmission()
+    { 
+        var input = new Variables();
+        input.SetVariable("Prefix", PlanModel.Prefix);
+
+        await WorkflowInvoker.TriggerSignalAsync("ReadPrefix", input);
+        ShowConfirmation = true;
+    }
+
+}

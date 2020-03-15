@@ -12,7 +12,12 @@ namespace Elsa.Samples.UserRegistration.Web.Extensions
                 .AddActivity<ActivateUser>()
                 .AddActivity<DeleteUser>()
                 .AddActivity<CreateTaskOrder>()
-                .AddActivity<ChangeOrderStaging>();
+                .AddActivity<ChangeOrderStaging>()
+                .AddActivity<ActivateA>()
+                .AddActivity<ActivateB>()
+                .AddActivity<ActivateC>()
+                .AddActivity<ActivateD>()
+                .AddActivity<ActivateE>();
         }
     }
 }
