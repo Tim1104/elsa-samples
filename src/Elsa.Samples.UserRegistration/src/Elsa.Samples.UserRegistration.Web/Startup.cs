@@ -8,6 +8,7 @@ using Elsa.Samples.UserRegistration.Web.Extensions;
 using Elsa.Samples.UserRegistration.Web.Handlers;
 using Elsa.Samples.UserRegistration.Web.Models;
 using Elsa.Samples.UserRegistration.Web.Services;
+using Elsa.Samples.UserRegistration.Web.Workflow;
 using Fluid;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,7 +55,8 @@ namespace Elsa.Samples.UserRegistration.Web
 
                 // Add a MongoDB collection for our User model.
                 .AddMongoDbCollection<User>("Users")
-
+                .AddMongoDbCollection<TaskOrder >("TaskOrders")
+                .AddWorkflow<DocumentApprovalWorkflow>()
                 // Add our liquid handler.
                 .AddNotificationHandlers(typeof(LiquidConfigurationHandler));
         }

@@ -10,7 +10,9 @@ namespace Elsa.Samples.UserRegistration.Web.Extensions
             return services
                 .AddActivity<CreateUser>()
                 .AddActivity<ActivateUser>()
-                .AddActivity<DeleteUser>();
+                .AddActivity<DeleteUser>()
+                .AddActivity<CreateTaskOrder>()
+                .AddActivity<ChangeOrderStaging>();
         }
     }
 }

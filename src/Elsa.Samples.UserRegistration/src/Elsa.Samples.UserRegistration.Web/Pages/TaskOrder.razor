@@ -1,0 +1,23 @@
+﻿@page "/task"
+
+@using Elsa.Activities.Workflows.Extensions
+@using Elsa.Models
+@inject IWorkflowInvoker WorkflowInvoker
+
+<div>
+    <h1>Task Order</h1>
+    <button @onclick="CreateOrder">Create</button>
+</div>
+
+
+@code {
+
+    private async Task CreateOrder()
+    {
+
+        var input = new Variables();
+        input.SetVariable("OrderModel", new CreateOrderModel { Description = "First Task", Assignee = "Tim" });
+
+        await WorkflowInvoker.TriggerSignalAsync("TaskOrder", input);
+    }
+}
