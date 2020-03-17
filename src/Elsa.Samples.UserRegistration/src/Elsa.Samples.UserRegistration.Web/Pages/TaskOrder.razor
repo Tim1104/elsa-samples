@@ -12,12 +12,15 @@
 
 @code {
 
+    private CreateOrderModel CreateOrderModel { get; set; } = new CreateOrderModel();
     private async Task CreateOrder()
     {
-
+        CreateOrderModel.Description = "First Task";
+        CreateOrderModel.Assignee = "Tim";
         var input = new Variables();
-        input.SetVariable("OrderModel", new CreateOrderModel { Description = "First Task", Assignee = "Tim" });
+        input.SetVariable("CreateOrderModel",CreateOrderModel);
 
-        await WorkflowInvoker.TriggerSignalAsync("TaskOrder", input);
+        await WorkflowInvoker.TriggerSignalAsync("Order", input);
+
     }
 }

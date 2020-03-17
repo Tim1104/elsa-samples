@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Elsa.Samples.UserRegistration.Web.Activities
 {
-    [ActivityDefinition(Category = "TaskOrder", Description = "Activate a Task Order", Icon = "fas  fa-plus", Outcomes = new[] { OutcomeNames.Done, "Not Found" })]
+    [ActivityDefinition(Category = "TaskOrder", Description = "Activate a Task Order", Icon = "fas  fa-plus", Outcomes = new[] { OutcomeNames.Done })]
     public class CreateTaskOrder : Activity
     {
         private readonly IMongoCollection<Models.TaskOrder> _store;
