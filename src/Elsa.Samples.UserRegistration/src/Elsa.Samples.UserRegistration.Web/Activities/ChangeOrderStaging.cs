@@ -29,6 +29,13 @@ namespace Elsa.Samples.UserRegistration.Web.Activities
             set => SetState(value);
         }
 
+        [ActivityProperty(Hint = "Enter an expression that evaluates to the ID of the order to activate.")]
+        public WorkflowExpression<string> NextStep
+        {
+            get => GetState<WorkflowExpression<string>>();
+            set => SetState(value);
+        }
+
         [ActivityProperty(Hint = "Enter an expression that evaluates to the Staging of the order to activate.")]
         public WorkflowExpression<string> Staging
         {
@@ -39,6 +46,7 @@ namespace Elsa.Samples.UserRegistration.Web.Activities
         protected override async Task<ActivityExecutionResult> OnExecuteAsync(WorkflowExecutionContext context, CancellationToken cancellationToken)
         {
             var orderId = await context.EvaluateAsync(OrderId, cancellationToken);
+            var nextStep = await context.EvaluateAsync(NextStep, cancellationToken);
             var orderEntity = await _store.AsQueryable().FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken);
 
             if (orderEntity == null)
@@ -48,7 +56,9 @@ namespace Elsa.Samples.UserRegistration.Web.Activities
 
             orderEntity.OrderStaging=  (Models.TaskOrderStaging)Enum.Parse(typeof(Models.TaskOrderStaging), staging);
             await _store.ReplaceOneAsync(x => x.Id == orderId, orderEntity, cancellationToken: cancellationToken);
-
+            var bl = context.Workflow.BlockingActivities;
+            context.Workflow.ExecutionLog.Add(new Elsa.Models.LogEntry 
+            { ActivityId = context.CurrentActivity.Id, Faulted = false, Message = nextStep });
             return Done();
         }
     }
